@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b0f17">
+<title>Liveticker – Eislöwen, NHL, Bayern, Dynamo &amp; Marc Márquez</title>
+<meta name="description" content="Live-Ergebnisse, kommende Termine und letzte Resultate für Eislöwen, Oilers, Golden Knights, Bayern, Dynamo Dresden und Marc Márquez.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230b0f17'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23ff3b4e'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <div class="brand"><span class="dot"></span><b>LIVE</b>TICKER</div>
+    <nav class="filters" id="filters" aria-label="Filter">
+      <button data-f="all" class="on">Alle</button>
+      <button data-f="live">Live <span class="count" id="liveCount">0</span></button>
+      <button data-f="hockey">Eishockey</button>
+      <button data-f="football">Fußball</button>
+      <button data-f="motorsport">Motorsport</button>
+      <button data-action="toggle-api" aria-expanded="false" aria-controls="apiPanel">API</button>
+    </nav>
+    <div class="status"><span id="clock" aria-label="Aktuelle Uhrzeit">--:--:--</span><span class="upd" id="upd" role="status" aria-live="polite">lädt …</span></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="liveBanner" class="banner" aria-live="polite" hidden></section>
+  <div class="layout">
+    <section>
+      <h2 class="sec">Teams &amp; Fahrer</h2>
+      <div class="grid" id="grid" aria-live="polite" aria-busy="true"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
+    </section>
+    <aside>
+      <h2 class="sec">Nächste Termine</h2>
+      <div class="agenda" id="agenda" aria-live="polite"></div>
+    </aside>
+  </div>
+  <section class="api-panel" id="apiPanel" hidden aria-labelledby="apiTitle">
+    <div class="api-head"><div><p class="eyebrow">INTEGRATION</p><h2 id="apiTitle">Liveticker-API</h2><p>JSON-Daten für eigene Dashboards, Automatisierungen oder Apps.</p></div><span class="api-state" id="apiState">wird geprüft …</span></div>
+    <div class="api-grid">
+      <div class="api-box">
+        <h3>Einstellungen</h3>
+        <label for="refreshEvery">Aktualisierungsintervall</label>
+        <div class="api-controls"><select id="refreshEvery"><option value="15000">15 Sekunden</option><option value="45000">45 Sekunden</option><option value="90000">90 Sekunden</option></select><button type="button" data-action="refresh-now">Jetzt aktualisieren</button></div>
+        <p class="hint">Die Auswahl wird nur in diesem Browser gespeichert. Während eines Live-Spiels wird weiterhin spätestens alle 12 Sekunden aktualisiert.</p>
+      </div>
+      <div class="api-box">
+        <h3>Anleitung</h3>
+        <ol><li>Starte auf der NAS <code>sh start-websites.sh</code>; das startet Gate und API gemeinsam.</li><li>Rufe die API-Basisadresse auf und prüfe <code>/health</code>.</li><li>Nutze die Endpunkte unten in einer App oder einem Dashboard.</li></ol>
+        <p class="hint">Die Website funktioniert auch ohne laufenden API-Server über ihre direkten, offiziellen Datenquellen.</p>
+      </div>
+    </div>
+    <div class="api-endpoints"><h3>Endpunkte</h3><p class="api-base" id="apiBase">/api/v1/</p><div class="endpoint-list"><code>GET /ticker</code><span>alle Teams und Spieldaten</span><code>GET /teams</code><span>Teamübersicht</span><code>GET /teams/{id}</code><span>ein Team, z. B. <code>eisloewen</code></span><code>GET /live</code><span>aktuell laufende Spiele</span><code>GET /next</code><span>nächste Termine</span><code>GET /health</code><span>Status der API</span></div></div>
+  </section>
+  <footer>Daten: OpenLigaDB, NHL, DEL2, MotoGP · Zeiten in deutscher Zeit · aktualisiert sich automatisch · v1.2.0</footer>
+</main>
+
+<div class="sheet-bg" id="sheetBg" hidden></div>
+<div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-labelledby="sheetTitle" tabindex="-1"></div>
+<noscript><p class="noscript">Für den Liveticker muss JavaScript aktiviert sein.</p></noscript>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
