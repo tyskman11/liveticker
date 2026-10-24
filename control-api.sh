@@ -2,7 +2,6 @@
 # Startet bzw. stoppt die Liveticker-JSON-API auf der NAS.
 set -eu
 ROOT=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-PROJECT_ROOT=$(CDPATH= cd -- "$ROOT/.." && pwd)
 PIDFILE="$ROOT/liveticker-api.pid"
 LOGDIR="$ROOT/logs"
 PORT=${LIVETICKER_API_PORT:-5056}
@@ -14,19 +13,9 @@ running() {
 start() {
   if running; then echo "Liveticker-API läuft bereits auf Port $PORT."; return; fi
   rm -f "$PIDFILE"; mkdir -p "$LOGDIR"
-  NODE=${NODE:-}
-  if [ -z "$NODE" ]; then
-    case "$(uname -m)" in aarch64|arm64) ARCH=arm64 ;; armv7l) ARCH=armv7l ;; *) ARCH=x64 ;; esac
-    # Dieselbe portable Node-Laufzeit wie das Gate verwenden. Auf einer
-    # unveränderten Ugreen-NAS liegt node häufig nicht im globalen PATH.
-    if [ -x "$PROJECT_ROOT/ai/runtime/node-linux-$ARCH/bin/node" ]; then
-      NODE="$PROJECT_ROOT/ai/runtime/node-linux-$ARCH/bin/node"
-    else
-      NODE=$(command -v node || true)
-    fi
-  fi
-  [ -n "$NODE" ] && [ -x "$NODE" ] || { echo 'FEHLER: Node.js fehlt.' >&2; exit 1; }
-  nohup env PORT="$PORT" "$NODE" "$ROOT/api-server.js" >> "$LOGDIR/liveticker-api.stdout.log" 2>> "$LOGDIR/liveticker-api.stderr.log" &
+  PYTHON=${PYTHON:-$(command -v python3 || command -v python || true)}
+  [ -n "$PYTHON" ] && [ -x "$PYTHON" ] || { echo 'FEHLER: Python 3 fehlt.' >&2; exit 1; }
+  nohup env PORT="$PORT" "$PYTHON" "$ROOT/server.py" >> "$LOGDIR/liveticker-api.stdout.log" 2>> "$LOGDIR/liveticker-api.stderr.log" &
   PID=$!; echo "$PID" > "$PIDFILE"; sleep 1
   if ! running; then rm -f "$PIDFILE"; echo 'FEHLER: Liveticker-API konnte nicht gestartet werden.' >&2; exit 1; fi
   echo "Liveticker-API läuft auf Port $PORT."

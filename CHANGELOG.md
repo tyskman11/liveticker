@@ -1,5 +1,11 @@
 # Versionsverlauf
 
+## 2.0.0 — 2026-10-24
+
+- Komplettes Server-, API-, Cache-, Datenquellen- und Logging-Backend von Node.js nach Python 3 migriert.
+- Die Browser-Oberfläche bezieht ihre Daten ausschließlich aus der Python-API; der frühere Browser-Datenabruf entfällt.
+- NAS-Startverwaltung auf `python3 server.py` umgestellt, ohne externe Python-Abhängigkeiten.
+
 ## 1.2.0 — 2026-10-20
 
 - API-Bereich mit Status, Einstellungen, Endpunktübersicht und Anleitung direkt

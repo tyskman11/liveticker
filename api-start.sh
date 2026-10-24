@@ -2,4 +2,4 @@
 # Startet Webseite und API gemeinsam auf Linux/NAS.
 set -eu
 cd "$(dirname "$0")"
-exec node api-server.js
+exec "${PYTHON:-python3}" server.py

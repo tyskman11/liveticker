@@ -4,17 +4,16 @@ Live ticker for Eislöwen (DEL2), Oilers and Golden Knights (NHL), Bayern and Dy
 
 The detail view archives the ten most recently completed games. When available, historic games retain their goal, assist, and penalty data.
 
-The folder can be served statically. For a complete local installation, `node api-server.js` starts the website and API together on port 5056. The frontend uses this API when available and falls back to direct data requests when served statically.
+The folder can be served statically. For a complete local installation, `python3 server.py` starts the website and API together on port 5056. The frontend uses this API when available.
 
 ## Files
 
 - `index.html`, `style.css`, `app.js` — presentation and browser behaviour
-- `data.js` — data retrieval and the `TEAMS` configuration containing team, league, and rider identifiers
-- `api-server.js` — combined static web server and JSON API
+- `server.py` — Python 3 standard-library web server, JSON API, caching, and data retrieval
 
 ## Start on a Ugreen NAS
 
-Start the project folder with `sh api-start.sh`, or run `node api-server.js` directly. `api-start.bat` is available on Windows.
+Start the project folder with `sh api-start.sh`, or run `python3 server.py` directly. `api-start.bat` is available on Windows.
 
 The default address is **http://NAS-IP:5056/**. The website is served at `/` and the API at `/api/v1/`. To use `https://tyskman11.duckdns.org/liveticker/`, the upstream web server must proxy `/liveticker/` to this service. The service accepts requests both with and without the `/liveticker/` prefix, so it works with either proxy configuration.
 

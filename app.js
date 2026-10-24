@@ -148,7 +148,7 @@
     }).join('') || '<div class="empty">Keine Spiele angesetzt.</div>';
     $('upd').textContent = 'Stand ' + fmtTime(new Date(d.updated)) + ' Uhr';
     const mode = $('apiState');
-    if (mode) { mode.textContent = state.apiMode === 'server' ? 'API-Server verbunden' : 'Direktabruf aktiv'; mode.className = 'api-state ' + (state.apiMode === 'server' ? 'ok' : 'fallback'); }
+    if (mode) { mode.textContent = state.apiMode === 'server' ? 'Python-API verbunden' : 'API-Verbindung gestört'; mode.className = 'api-state ' + (state.apiMode === 'server' ? 'ok' : 'fallback'); }
     const base = $('apiBase');
     if (base) { const root = location.pathname.replace(/[^/]*$/, ''); base.textContent = root + 'api/v1/'; }
     const refresh = $('refreshEvery'); if (refresh) refresh.value = String(state.refreshMs);
@@ -228,8 +228,8 @@
         loggedErrors.add(apiSignature);
         log('error', 'API-Abruf fehlgeschlagen; Direktabruf wird versucht', { error: String(apiError.message || apiError) });
       }
-      try { state.data = await window.buildAll(); state.apiMode = 'fallback'; render(); }
-      catch (fallbackError) { log('error', 'Auch Direktabruf fehlgeschlagen', { error: String(fallbackError.message || fallbackError) }); $('upd').textContent = 'Verbindung gestört …'; }
+      state.apiMode = 'fallback';
+      $('upd').textContent = 'API-Verbindung gestört …';
     }
     finally { state.loading = false; scheduleLoad(); }
   }
